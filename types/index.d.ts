@@ -55,4 +55,30 @@ interface Feedback {
       explanation: string;
     }[];
   };
+  resumeHealth?: string;
+  strengths?: string[];
+  improvements?: string[];
+  missingKeywords?: string[];
+  categoryScores?: {
+    skillsMatch: number;
+    projects: number;
+    experience: number;
+    formatting: number;
+    atsCompatibility: number;
+    keywordDensity?: number;
+  };
+  improveSuggestions?: {
+    before: string;
+    after: string;
+  }[];
+  parsedResume?: {
+    text: string;
+    skills: string[];
+    education: string[];
+    projects: string[];
+    experience: string[];
+    certifications: string[];
+    technologies: string[];
+    keywords: string[];
+  };
 }

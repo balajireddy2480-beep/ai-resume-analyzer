@@ -1,36 +1,57 @@
 import React from "react";
 import { Link } from "react-router";
-import type { resumes } from "~/constants";
 import ScoreCircle from "./ScoreCircle";
+import ScoreBadge from "./ScoreBadge";
 
-const Resumecard = ({
-  resume: { id, companyName, jobTitle, feedback, imagePath },
-}: {
-  resume: Resume & { resumeUrl: string };
-}) => {
-  console.log(imagePath);
+interface ResumecardProps {
+  resume: {
+    id: string;
+    companyName?: string;
+    jobTitle?: string;
+    imagePath: string;
+    resumePath: string;
+    feedback: Feedback;
+  };
+}
+
+const Resumecard = ({ resume: { id, companyName, jobTitle, feedback, imagePath } }: ResumecardProps) => {
   return (
     <Link
       to={`/resume/${id}`}
-      className="resume-card animate-in fade-in duration-1000 overflow-hidden"
+      className="resume-card animate-in fade-in duration-700 overflow-hidden hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
     >
       <div className="resume-card-header">
-        <div className="flex flex-col gap-2">
-          <h2 className="!text-black font-bold break-words">{companyName}</h2>
-          <h3 className="text-lg break-words text-gray-500">{jobTitle}</h3>
+        <div className="flex flex-col gap-1 min-w-0">
+          <h2 className="!text-black font-bold break-words text-base leading-tight">
+            {companyName || "Company"}
+          </h2>
+          <h3 className="text-sm break-words text-gray-500">
+            {jobTitle || "Position"}
+          </h3>
+          <div className="mt-1">
+            <ScoreBadge score={feedback.overallScore} />
+          </div>
         </div>
         <div className="flex-shrink-0">
           <ScoreCircle score={feedback.overallScore} />
         </div>
       </div>
-      <div className="gradient-border animate_in fade-in duration-1000" />
 
-      <div className="w-full h-[280px] overflow-hidden rounded-xl bg-gray-50 flex justify-center image-center mt-4">
-        <img
-          src={imagePath}
-          alt="Resume"
-          className="w-full h-full object-cover object-top"
-        />
+      <div className="gradient-border animate-in fade-in duration-700 !p-0 h-px" />
+
+      <div className="w-full h-[260px] overflow-hidden rounded-xl bg-gray-50 flex justify-center items-start mt-2">
+        {imagePath ? (
+          <img
+            src={imagePath}
+            alt={`${companyName ?? "Resume"} preview`}
+            className="w-full h-full object-cover object-top"
+            loading="lazy"
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center">
+            <div className="skeleton-block w-full h-full rounded-xl" />
+          </div>
+        )}
       </div>
     </Link>
   );

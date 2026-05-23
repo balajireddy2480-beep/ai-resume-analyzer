@@ -334,6 +334,8 @@ export const usePuterStore = create<PuterStore>((set, get) => {
       return;
     }
 
+    // Correct Puter.js call: puter.ai.chat(messages, options)
+    // Model must use the full provider/model-name format
     return puter.ai.chat(
       [
         {
@@ -350,7 +352,7 @@ export const usePuterStore = create<PuterStore>((set, get) => {
           ],
         },
       ],
-      { model: "claude-sonnet-4" },
+      { model: "claude-sonnet-4-5" },
     ) as Promise<AIResponse | undefined>;
   };
 
@@ -396,10 +398,8 @@ export const usePuterStore = create<PuterStore>((set, get) => {
       setError("Puter.js not available");
       return;
     }
-    if (returnValues === undefined) {
-      returnValues = false;
-    }
-    return puter.kv.list(pattern, returnValues);
+    // Default to false — returns key name strings only
+    return puter.kv.list(pattern, returnValues ?? false);
   };
 
   const flushKV = async () => {
